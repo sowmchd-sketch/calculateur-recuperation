@@ -1,0 +1,166 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mon équilibre cognitif</title>
+<style>
+  :root {
+    color-scheme: light;
+    --sage: #78a78f;
+    --dark: #263d34;
+    --muted: #728078;
+    --soft: #f0f5f1;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 16px;
+    font-family: system-ui, -apple-system, sans-serif;
+    color: var(--dark);
+    background: transparent;
+  }
+  .widget {
+    max-width: 460px;
+    margin: auto;
+    padding: 24px;
+    background: #fff;
+    border: 1px solid #e2eae4;
+    border-radius: 22px;
+  }
+  header { display: flex; align-items: center; gap: 12px; }
+  .symbol {
+    background: var(--soft);
+    padding: 12px;
+    border-radius: 14px;
+    font-size: 25px;
+  }
+  h1 { margin: 0; font-size: 20px; }
+  .subtitle { color: var(--muted); font-size: 12px; margin-top: 4px; }
+  .dial { position: relative; width: 235px; height: 235px; margin: 20px auto; }
+  svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+  circle { fill: none; stroke-width: 14; }
+  .track { stroke: #e9efeb; }
+  .progress {
+    stroke: var(--sage);
+    stroke-linecap: round;
+    stroke-dasharray: 603.19;
+    stroke-dashoffset: 603.19;
+    transition: stroke-dashoffset .3s ease;
+  }
+  .dial-content {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+  }
+  .eyebrow { font-size: 11px; letter-spacing: 1px; color: var(--muted); }
+  .result { font-size: 38px; font-weight: 750; margin: 8px 0; }
+  .small { font-size: 12px; color: var(--muted); }
+  .panel { background: var(--soft); padding: 18px; border-radius: 15px; }
+  .line { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .value { font-weight: 750; font-size: 21px; }
+  input[type="range"] { width: 100%; margin: 20px 0 4px; accent-color: var(--sage); cursor: pointer; }
+  .scale { display: flex; justify-content: space-between; color: var(--muted); font-size: 11px; }
+  .ratio { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 22px; }
+  .controls { display: flex; align-items: center; gap: 12px; }
+  button {
+    width: 34px; height: 34px; border: 1px solid #d7e4da;
+    border-radius: 10px; background: white; color: var(--dark);
+    font-size: 20px; cursor: pointer;
+  }
+  button:disabled { opacity: .35; cursor: default; }
+  .note { margin: 22px 0 0; text-align: center; font-size: 11px; color: var(--muted); line-height: 1.6; }
+</style>
+</head>
+<body>
+<main class="widget">
+  <header>
+    <div class="symbol">🧠</div>
+    <div>
+      <h1>Mon équilibre cognitif</h1>
+      <div class="subtitle">Calculateur de récupération</div>
+    </div>
+  </header>
+
+  <div class="dial">
+    <svg viewBox="0 0 240 240" aria-hidden="true">
+      <circle class="track" cx="120" cy="120" r="96"></circle>
+      <circle id="progress" class="progress" cx="120" cy="120" r="96"></circle>
+    </svg>
+    <div class="dial-content" aria-live="polite">
+      <span class="eyebrow">RÉCUPÉRATION</span>
+      <span class="result" id="result">45 min</span>
+      <span class="small">durée indicative</span>
+      <span style="margin-top:10px">🌿</span>
+    </div>
+  </div>
+
+  <section class="panel">
+    <div class="line">
+      <strong>🧠 Effort cognitif</strong>
+      <span class="value" id="hoursLabel">3 h</span>
+    </div>
+    <input id="hours" type="range" min="0" max="8" step="0.5" value="3" aria-label="Heures d'effort cognitif">
+    <div class="scale"><span>0 h</span><span>8 h</span></div>
+  </section>
+
+  <section class="ratio">
+    <div>
+      <strong>Ratio de récupération</strong>
+      <div class="subtitle">Minutes par heure d'effort</div>
+    </div>
+    <div class="controls">
+      <button id="minus" aria-label="Diminuer le ratio">−</button>
+      <strong id="ratioLabel">15 min</strong>
+      <button id="plus" aria-label="Augmenter le ratio">+</button>
+    </div>
+  </section>
+
+  <p class="note">
+    Ratio personnel expérimental, non médical.
+    À ajuster selon la fatigue ressentie.
+    Le cadran représente jusqu'à 2 h de récupération.
+  </p>
+</main>
+
+<script>
+  const hours = document.getElementById("hours");
+  const hoursLabel = document.getElementById("hoursLabel");
+  const ratioLabel = document.getElementById("ratioLabel");
+  const result = document.getElementById("result");
+  const progress = document.getElementById("progress");
+  const minus = document.getElementById("minus");
+  const plus = document.getElementById("plus");
+
+  let ratio = 15;
+  const circumference = 2 * Math.PI * 96;
+
+  function update() {
+    const effort = Number(hours.value);
+    const minutes = Math.round(effort * ratio);
+    hoursLabel.textContent = effort.toLocaleString("fr-FR") + " h";
+    ratioLabel.textContent = ratio + " min";
+    result.textContent = minutes >= 60
+      ? Math.floor(minutes / 60) + "h" + String(minutes % 60).padStart(2, "0")
+      : minutes + " min";
+    progress.style.strokeDashoffset =
+      circumference * (1 - Math.min(minutes / 120, 1));
+    minus.disabled = ratio <= 5;
+    plus.disabled = ratio >= 30;
+  }
+
+  hours.addEventListener("input", update);
+  minus.addEventListener("click", () => {
+    ratio = Math.max(5, ratio - 5);
+    update();
+  });
+  plus.addEventListener("click", () => {
+    ratio = Math.min(30, ratio + 5);
+    update();
+  });
+
+  update();
+</script>
+</body>
+</html>
