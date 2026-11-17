@@ -13,7 +13,9 @@
   --soft: #f0f5f1;
 }
 
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 
 body {
   margin: 0;
@@ -57,7 +59,7 @@ h1 {
   margin-top: 3px;
 }
 
-/* CADRAN : MÊME DISPOSITION QUE LE POMODORO */
+/* CADRAN IDENTIQUE AU POMODORO */
 
 .dial {
   position: relative;
@@ -193,9 +195,17 @@ button:disabled {
 }
 
 @media (max-width: 330px) {
-  .widget { padding: 11px; }
-  h1 { font-size: 15px; }
-  .ratio { flex-wrap: wrap; }
+  .widget {
+    padding: 11px;
+  }
+
+  h1 {
+    font-size: 15px;
+  }
+
+  .ratio {
+    flex-wrap: wrap;
+  }
 }
 </style>
 </head>
@@ -232,26 +242,16 @@ button:disabled {
     </svg>
 
     <div class="dial-content" aria-live="polite">
-      <span class="eyebrow">
-        RÉCUPÉRATION
-      </span>
-
-      <span class="result" id="result">
-        45 min
-      </span>
-
-      <span class="small">
-        durée indicative
-      </span>
+      <span class="eyebrow">RÉCUPÉRATION</span>
+      <span class="result" id="result">45 min</span>
+      <span class="small">durée indicative</span>
     </div>
   </div>
 
   <section class="panel">
     <div class="line">
       <strong>🧠 Effort cognitif</strong>
-      <span class="value" id="hoursLabel">
-        3 h
-      </span>
+      <span class="value" id="hoursLabel">3 h</span>
     </div>
 
     <input
@@ -278,12 +278,14 @@ button:disabled {
     </div>
 
     <div class="controls">
-      <button id="minus"
+      <button
+        id="minus"
         aria-label="Diminuer le ratio">−</button>
 
       <strong id="ratioLabel">15 min</strong>
 
-      <button id="plus"
+      <button
+        id="plus"
         aria-label="Augmenter le ratio">+</button>
     </div>
   </section>
@@ -314,7 +316,8 @@ function update() {
   hoursLabel.textContent =
     effort.toLocaleString("fr-FR") + " h";
 
-  ratioLabel.textContent = ratio + " min";
+  ratioLabel.textContent =
+    ratio + " min";
 
   result.textContent = minutes >= 60
     ? Math.floor(minutes / 60) + "h" +
