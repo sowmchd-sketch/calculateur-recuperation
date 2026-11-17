@@ -57,12 +57,12 @@ h1 {
   margin-top: 3px;
 }
 
-/* CADRAN */
+/* CADRAN : MÊME DISPOSITION QUE LE POMODORO */
 
 .dial {
   position: relative;
-  width: 160px;
-  height: 160px;
+  width: 155px;
+  height: 155px;
   margin: 12px auto;
 }
 
@@ -89,45 +89,31 @@ h1 {
   transition: stroke-dashoffset .3s ease;
 }
 
-/* CONTENU CENTRAL ÉQUILIBRÉ */
-
 .dial-content {
   position: absolute;
   inset: 0;
-  display: grid;
-  grid-template-rows: 14px 36px 14px 22px;
-  row-gap: 5px;
-  align-content: center;
-  justify-items: center;
-  padding-top: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .eyebrow {
   font-size: 9px;
-  line-height: 14px;
   letter-spacing: .7px;
   color: var(--muted);
-  white-space: nowrap;
 }
 
 .result {
-  font-size: 28px;
+  font-size: 29px;
   font-weight: 750;
-  line-height: 36px;
+  margin: 5px 0;
   font-variant-numeric: tabular-nums;
-  white-space: nowrap;
 }
 
 .small {
   font-size: 10px;
-  line-height: 14px;
   color: var(--muted);
-  white-space: nowrap;
-}
-
-.leaf {
-  font-size: 17px;
-  line-height: 22px;
 }
 
 /* EFFORT COGNITIF */
@@ -170,7 +156,7 @@ input[type="range"] {
   color: var(--muted);
 }
 
-/* RATIO */
+/* RATIO DE RÉCUPÉRATION */
 
 .ratio {
   margin-top: 14px;
@@ -221,33 +207,60 @@ button:disabled {
     <div class="symbol">🧠</div>
     <div>
       <h1>Mon équilibre cognitif</h1>
-      <div class="subtitle">Calculateur de récupération</div>
+      <div class="subtitle">
+        Calculateur de récupération
+      </div>
     </div>
   </header>
 
   <div class="dial">
     <svg viewBox="0 0 240 240" aria-hidden="true">
-      <circle class="track" cx="120" cy="120" r="96"></circle>
-      <circle id="progress" class="progress"
-        cx="120" cy="120" r="96"></circle>
+      <circle
+        class="track"
+        cx="120"
+        cy="120"
+        r="96">
+      </circle>
+
+      <circle
+        id="progress"
+        class="progress"
+        cx="120"
+        cy="120"
+        r="96">
+      </circle>
     </svg>
 
     <div class="dial-content" aria-live="polite">
-      <span class="eyebrow">RÉCUPÉRATION</span>
-      <span class="result" id="result">45 min</span>
-      <span class="small">durée indicative</span>
-      <span class="leaf">🌿</span>
+      <span class="eyebrow">
+        RÉCUPÉRATION
+      </span>
+
+      <span class="result" id="result">
+        45 min
+      </span>
+
+      <span class="small">
+        durée indicative
+      </span>
     </div>
   </div>
 
   <section class="panel">
     <div class="line">
       <strong>🧠 Effort cognitif</strong>
-      <span class="value" id="hoursLabel">3 h</span>
+      <span class="value" id="hoursLabel">
+        3 h
+      </span>
     </div>
 
-    <input id="hours" type="range"
-      min="0" max="8" step="0.5" value="3"
+    <input
+      id="hours"
+      type="range"
+      min="0"
+      max="8"
+      step="0.5"
+      value="3"
       aria-label="Heures d'effort cognitif">
 
     <div class="scale">
@@ -259,13 +272,19 @@ button:disabled {
   <section class="ratio">
     <div>
       <strong>Ratio de récupération</strong>
-      <div class="subtitle">Minutes par heure d'effort</div>
+      <div class="subtitle">
+        Minutes par heure d'effort
+      </div>
     </div>
 
     <div class="controls">
-      <button id="minus" aria-label="Diminuer le ratio">−</button>
+      <button id="minus"
+        aria-label="Diminuer le ratio">−</button>
+
       <strong id="ratioLabel">15 min</strong>
-      <button id="plus" aria-label="Augmenter le ratio">+</button>
+
+      <button id="plus"
+        aria-label="Augmenter le ratio">+</button>
     </div>
   </section>
 
