@@ -42,23 +42,33 @@ header {
   background: var(--soft);
   font-size: 20px;
 }
-h1 { margin: 0; font-size: 17px; }
+.heading { flex: 1; min-width: 0; }
+h1 { margin: 0; font-size: 16px; }
 .subtitle {
   color: var(--muted);
   font-size: 11px;
   margin-top: 3px;
 }
+.settings-button {
+  border: 1px solid var(--border);
+  background: white;
+  border-radius: 9px;
+  width: 34px;
+  height: 34px;
+  cursor: pointer;
+  font-size: 18px;
+}
 .tabs {
   display: flex;
   gap: 5px;
   padding: 4px;
-  margin-top: 16px;
+  margin-top: 12px;
   background: var(--soft);
   border-radius: 12px;
 }
 .tab {
   flex: 1;
-  padding: 9px 5px;
+  padding: 8px 4px;
   border: 0;
   border-radius: 9px;
   background: transparent;
@@ -74,9 +84,9 @@ h1 { margin: 0; font-size: 17px; }
 }
 .dial {
   position: relative;
-  width: 180px;
-  height: 180px;
-  margin: 16px auto;
+  width: 155px;
+  height: 155px;
+  margin: 12px auto;
 }
 .dial svg {
   width: 100%;
@@ -85,7 +95,7 @@ h1 { margin: 0; font-size: 17px; }
 }
 .dial circle {
   fill: none;
-  stroke-width: 13;
+  stroke-width: 14;
 }
 .track { stroke: #e9efeb; }
 .progress {
@@ -104,29 +114,29 @@ h1 { margin: 0; font-size: 17px; }
   justify-content: center;
 }
 .eyebrow {
-  font-size: 10px;
+  font-size: 9px;
   letter-spacing: .7px;
   color: var(--muted);
 }
 .result {
-  font-size: 34px;
+  font-size: 29px;
   font-weight: 750;
-  margin: 7px 0;
+  margin: 5px 0;
   font-variant-numeric: tabular-nums;
 }
 .status {
-  font-size: 11px;
+  font-size: 10px;
   color: var(--muted);
 }
 .actions {
   display: flex;
   justify-content: center;
-  gap: 10px;
+  gap: 8px;
 }
 .action {
-  padding: 10px 14px;
+  padding: 9px 12px;
   border: 1px solid var(--border);
-  border-radius: 11px;
+  border-radius: 10px;
   background: white;
   color: var(--dark);
   font-size: 12px;
@@ -139,11 +149,12 @@ h1 { margin: 0; font-size: 17px; }
   color: white;
 }
 .panel {
-  margin-top: 18px;
-  padding: 13px;
-  border-radius: 13px;
+  margin-top: 14px;
+  padding: 12px;
+  border-radius: 12px;
   background: var(--soft);
 }
+.panel[hidden] { display: none; }
 .line {
   display: flex;
   align-items: center;
@@ -182,7 +193,7 @@ h1 { margin: 0; font-size: 17px; }
   background: #dce7df;
 }
 .note {
-  margin: 13px 0 0;
+  margin: 12px 0 0;
   text-align: center;
   font-size: 10px;
   color: var(--muted);
@@ -190,8 +201,9 @@ h1 { margin: 0; font-size: 17px; }
 }
 @media (max-width: 330px) {
   .widget { padding: 11px; }
-  h1 { font-size: 15px; }
+  h1 { font-size: 14px; }
   .line { flex-wrap: wrap; }
+  .tab { font-size: 11px; }
 }
 </style>
 </head>
@@ -199,10 +211,13 @@ h1 { margin: 0; font-size: 17px; }
 <main class="widget">
   <header>
     <div class="symbol">⏱️</div>
-    <div>
+    <div class="heading">
       <h1>Mon espace de concentration</h1>
       <div class="subtitle">Pomodoro • Travail & pauses</div>
     </div>
+    <button class="settings-button" id="settings"
+      aria-label="Afficher les réglages"
+      aria-expanded="false">⚙️</button>
   </header>
 
   <div class="tabs">
@@ -220,27 +235,19 @@ h1 { margin: 0; font-size: 17px; }
       <circle class="progress" id="progress"
         cx="120" cy="120" r="96"></circle>
     </svg>
-    <div class="dial-content" aria-live="off">
-      <span class="eyebrow" id="modeLabel">
-        CONCENTRATION
-      </span>
-      <span class="result" id="clock">25:00</span>
-      <span class="status" id="status">
-        Prêt à démarrer
-      </span>
+    <div class="dial-content">
+      <span class="eyebrow" id="modeLabel">CONCENTRATION</span>
+      <span class="result" id="clock" role="timer">25:00</span>
+      <span class="status" id="status">Prêt à démarrer</span>
     </div>
   </div>
 
   <div class="actions">
-    <button class="action primary" id="start">
-      ▶ Démarrer
-    </button>
-    <button class="action" id="reset">
-      ↺ Réinitialiser
-    </button>
+    <button class="action primary" id="start">▶ Démarrer</button>
+    <button class="action" id="reset">↺ Réinitialiser</button>
   </div>
 
-  <section class="panel">
+  <section class="panel" id="settingsPanel" hidden>
     <div class="line">
       <div>
         <strong>Durée de concentration</strong>
@@ -268,7 +275,6 @@ h1 { margin: 0; font-size: 17px; }
 
   <p class="note">
     Alterne concentration et pauses à ton rythme.
-    Le minuteur ne change pas automatiquement de session.
   </p>
 </main>
 
@@ -291,10 +297,8 @@ function totalSeconds() {
 }
 
 function formatTime(seconds) {
-  const m = Math.floor(seconds / 60);
-  const s = seconds % 60;
-  return String(m).padStart(2, "0") + ":" +
-         String(s).padStart(2, "0");
+  return String(Math.floor(seconds / 60)).padStart(2, "0") +
+    ":" + String(seconds % 60).padStart(2, "0");
 }
 
 function render() {
@@ -315,12 +319,9 @@ function render() {
     remaining < totalSeconds() ? "En pause" :
     "Prêt à démarrer";
 
-  const progress = totalSeconds() > 0
-    ? remaining / totalSeconds() : 0;
-
+  const fraction = remaining / totalSeconds();
   $("progress").style.strokeDashoffset =
-    circumference * (1 - progress);
-
+    circumference * (1 - fraction);
   $("progress").style.stroke =
     mode === "focus" ? "#78a78f" : "#b5a1d4";
 
@@ -339,26 +340,37 @@ function stopTimer() {
   interval = null;
 }
 
-function playSound() {
-  try {
-    const ctx = audioContext;
-    if (!ctx) return;
-    if (ctx.state === "suspended") ctx.resume();
+function playChime() {
+  if (!audioContext) return;
 
-    const oscillator = ctx.createOscillator();
-    const gain = ctx.createGain();
-    oscillator.type = "sine";
-    oscillator.frequency.value = 660;
-    gain.gain.setValueAtTime(0.12, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(
-      0.001, ctx.currentTime + 0.35
-    );
-    oscillator.connect(gain);
-    gain.connect(ctx.destination);
-    oscillator.start();
-    oscillator.stop(ctx.currentTime + 0.35);
+  try {
+    if (audioContext.state === "suspended") {
+      audioContext.resume();
+    }
+
+    const notes = [523.25, 659.25, 783.99];
+    const start = audioContext.currentTime + 0.05;
+
+    notes.forEach((frequency, i) => {
+      const oscillator = audioContext.createOscillator();
+      const gain = audioContext.createGain();
+      const time = start + i * 0.42;
+
+      oscillator.type = "sine";
+      oscillator.frequency.setValueAtTime(frequency, time);
+
+      gain.gain.setValueAtTime(0.0001, time);
+      gain.gain.exponentialRampToValueAtTime(0.24, time + 0.04);
+      gain.gain.exponentialRampToValueAtTime(0.0001, time + 0.8);
+
+      oscillator.connect(gain);
+      gain.connect(audioContext.destination);
+
+      oscillator.start(time);
+      oscillator.stop(time + 0.82);
+    });
   } catch (e) {
-    // Le son peut être bloqué par le navigateur.
+    // Certains navigateurs peuvent bloquer le son.
   }
 }
 
@@ -371,7 +383,7 @@ function tick() {
 
   if (remaining === 0) {
     stopTimer();
-    playSound();
+    playChime();
   }
   render();
 }
@@ -423,15 +435,13 @@ $("breakTab").addEventListener("click", () =>
 
 function adjust(which, delta) {
   stopTimer();
+
   if (which === "focus") {
-    focusMinutes = Math.max(
-      5, Math.min(90, focusMinutes + delta)
-    );
+    focusMinutes = Math.max(5, Math.min(90, focusMinutes + delta));
   } else {
-    breakMinutes = Math.max(
-      5, Math.min(30, breakMinutes + delta)
-    );
+    breakMinutes = Math.max(5, Math.min(30, breakMinutes + delta));
   }
+
   remaining = totalSeconds();
   render();
 }
@@ -448,6 +458,14 @@ $("breakMinus").addEventListener("click", () =>
 $("breakPlus").addEventListener("click", () =>
   adjust("break", 5)
 );
+
+$("settings").addEventListener("click", () => {
+  const panel = $("settingsPanel");
+  panel.hidden = !panel.hidden;
+  $("settings").setAttribute(
+    "aria-expanded", String(!panel.hidden)
+  );
+});
 
 render();
 </script>
