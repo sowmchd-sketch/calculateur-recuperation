@@ -13,9 +13,7 @@
   --soft: #f0f5f1;
 }
 
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
   margin: 0;
@@ -91,56 +89,48 @@ h1 {
   transition: stroke-dashoffset .3s ease;
 }
 
-/* POSITIONNEMENT DES TEXTES */
+/* CONTENU CENTRAL ÉQUILIBRÉ */
 
 .dial-content {
   position: absolute;
   inset: 0;
-  text-align: center;
+  display: grid;
+  grid-template-rows: 14px 36px 14px 22px;
+  row-gap: 5px;
+  align-content: center;
+  justify-items: center;
+  padding-top: 0;
 }
 
 .eyebrow {
-  position: absolute;
-  top: 38px;
-  left: 0;
-  width: 100%;
   font-size: 9px;
-  line-height: 12px;
+  line-height: 14px;
   letter-spacing: .7px;
   color: var(--muted);
+  white-space: nowrap;
 }
 
 .result {
-  position: absolute;
-  top: 51px;
-  left: 0;
-  width: 100%;
   font-size: 28px;
   font-weight: 750;
-  line-height: 34px;
+  line-height: 36px;
   font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 
 .small {
-  position: absolute;
-  top: 96px;
-  left: 0;
-  width: 100%;
   font-size: 10px;
-  line-height: 12px;
+  line-height: 14px;
   color: var(--muted);
+  white-space: nowrap;
 }
 
 .leaf {
-  position: absolute;
-  top: 116px;
-  left: 0;
-  width: 100%;
   font-size: 17px;
-  line-height: 20px;
+  line-height: 22px;
 }
 
-/* PANNEAU EFFORT COGNITIF */
+/* EFFORT COGNITIF */
 
 .panel {
   padding: 12px;
@@ -217,122 +207,66 @@ button:disabled {
 }
 
 @media (max-width: 330px) {
-  .widget {
-    padding: 11px;
-  }
-
-  h1 {
-    font-size: 15px;
-  }
-
-  .ratio {
-    flex-wrap: wrap;
-  }
+  .widget { padding: 11px; }
+  h1 { font-size: 15px; }
+  .ratio { flex-wrap: wrap; }
 }
 </style>
 </head>
 
 <body>
-
 <main class="widget">
 
   <header>
     <div class="symbol">🧠</div>
     <div>
       <h1>Mon équilibre cognitif</h1>
-      <div class="subtitle">
-        Calculateur de récupération
-      </div>
+      <div class="subtitle">Calculateur de récupération</div>
     </div>
   </header>
 
   <div class="dial">
-
     <svg viewBox="0 0 240 240" aria-hidden="true">
-      <circle
-        class="track"
-        cx="120"
-        cy="120"
-        r="96">
-      </circle>
-
-      <circle
-        id="progress"
-        class="progress"
-        cx="120"
-        cy="120"
-        r="96">
-      </circle>
+      <circle class="track" cx="120" cy="120" r="96"></circle>
+      <circle id="progress" class="progress"
+        cx="120" cy="120" r="96"></circle>
     </svg>
 
     <div class="dial-content" aria-live="polite">
-      <span class="eyebrow">
-        RÉCUPÉRATION
-      </span>
-
-      <span class="result" id="result">
-        45 min
-      </span>
-
-      <span class="small">
-        durée indicative
-      </span>
-
-      <span class="leaf">
-        🌿
-      </span>
+      <span class="eyebrow">RÉCUPÉRATION</span>
+      <span class="result" id="result">45 min</span>
+      <span class="small">durée indicative</span>
+      <span class="leaf">🌿</span>
     </div>
-
   </div>
 
   <section class="panel">
-
     <div class="line">
       <strong>🧠 Effort cognitif</strong>
-      <span class="value" id="hoursLabel">
-        3 h
-      </span>
+      <span class="value" id="hoursLabel">3 h</span>
     </div>
 
-    <input
-      id="hours"
-      type="range"
-      min="0"
-      max="8"
-      step="0.5"
-      value="3"
+    <input id="hours" type="range"
+      min="0" max="8" step="0.5" value="3"
       aria-label="Heures d'effort cognitif">
 
     <div class="scale">
       <span>0 h</span>
       <span>8 h</span>
     </div>
-
   </section>
 
   <section class="ratio">
-
     <div>
       <strong>Ratio de récupération</strong>
-      <div class="subtitle">
-        Minutes par heure d'effort
-      </div>
+      <div class="subtitle">Minutes par heure d'effort</div>
     </div>
 
     <div class="controls">
-      <button
-        id="minus"
-        aria-label="Diminuer le ratio">−</button>
-
-      <strong id="ratioLabel">
-        15 min
-      </strong>
-
-      <button
-        id="plus"
-        aria-label="Augmenter le ratio">+</button>
+      <button id="minus" aria-label="Diminuer le ratio">−</button>
+      <strong id="ratioLabel">15 min</strong>
+      <button id="plus" aria-label="Augmenter le ratio">+</button>
     </div>
-
   </section>
 
   <p class="note">
@@ -352,7 +286,6 @@ const minus = document.getElementById("minus");
 const plus = document.getElementById("plus");
 
 let ratio = 15;
-
 const circumference = 2 * Math.PI * 96;
 
 function update() {
@@ -362,8 +295,7 @@ function update() {
   hoursLabel.textContent =
     effort.toLocaleString("fr-FR") + " h";
 
-  ratioLabel.textContent =
-    ratio + " min";
+  ratioLabel.textContent = ratio + " min";
 
   result.textContent = minutes >= 60
     ? Math.floor(minutes / 60) + "h" +
@@ -371,8 +303,7 @@ function update() {
     : minutes + " min";
 
   progress.style.strokeDashoffset =
-    circumference *
-    (1 - Math.min(minutes / 120, 1));
+    circumference * (1 - Math.min(minutes / 120, 1));
 
   minus.disabled = ratio <= 5;
   plus.disabled = ratio >= 30;
@@ -392,6 +323,5 @@ plus.addEventListener("click", () => {
 
 update();
 </script>
-
 </body>
 </html>
