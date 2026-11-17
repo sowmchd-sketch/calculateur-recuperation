@@ -73,6 +73,8 @@ circle {
   stroke-dashoffset: 603.19;
   transition: stroke-dashoffset .3s ease;
 }
+
+/* Contenu du cadran : espacement équilibré */
 .dial-content {
   position: absolute;
   inset: 0;
@@ -80,22 +82,32 @@ circle {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 7px;
+  padding-top: 12px;
 }
 .eyebrow {
   font-size: 9px;
   letter-spacing: .7px;
   color: var(--muted);
-  transform: translateY(12px);
+  line-height: 1.2;
 }
 .result {
   font-size: 28px;
   font-weight: 750;
-  margin: 5px 0;
+  line-height: 1.1;
+  margin: 0;
 }
 .small {
   font-size: 10px;
   color: var(--muted);
+  line-height: 1.2;
 }
+.leaf {
+  font-size: 17px;
+  line-height: 1;
+  margin-top: 1px;
+}
+
 .panel {
   padding: 12px;
   border-radius: 12px;
@@ -176,11 +188,12 @@ button:disabled {
       <circle id="progress" class="progress"
         cx="120" cy="120" r="96"></circle>
     </svg>
+
     <div class="dial-content" aria-live="polite">
       <span class="eyebrow">RÉCUPÉRATION</span>
       <span class="result" id="result">45 min</span>
       <span class="small">durée indicative</span>
-      <span style="margin-top:5px">🌿</span>
+      <span class="leaf">🌿</span>
     </div>
   </div>
 
