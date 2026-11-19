@@ -10,8 +10,8 @@
     :root {
       font-family: system-ui, -apple-system, "Segoe UI",
         Roboto, sans-serif;
-      color: #253044;
-      background: #f5f6f8;
+      color: #30334c;
+      background: #f7f7fb;
       font-synthesis: none;
     }
 
@@ -28,64 +28,95 @@
       max-width: 760px;
       margin: auto;
       padding: 26px;
-      background: #fff;
-      border: 1px solid #e6e9ef;
-      border-radius: 18px;
-      box-shadow: 0 3px 16px #19243a08;
+      background: #ffffff;
+      border: 1px solid #e1e4ef;
+      border-radius: 20px;
+      box-shadow: 0 5px 22px rgba(48, 42, 91, 0.06);
     }
 
-    h1 {
-      font-size: 27px;
-      line-height: 1.25;
-      margin: 0;
-    }
-
-    h2 {
-      font-size: 19px;
-      margin: 0 0 18px;
-    }
-
-    .top {
+    .header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      gap: 12px;
-      margin-bottom: 16px;
+      gap: 14px;
     }
 
-    .description {
-      font-size: 16px;
-      line-height: 1.6;
-      color: #697386;
-      margin: 0 0 22px;
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
     }
 
-    .badge {
-      padding: 7px 12px;
-      border-radius: 30px;
-      font-size: 13px;
+    .header-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 52px;
+      height: 52px;
+      flex-shrink: 0;
+      background: #eeeafe;
+      border-radius: 15px;
+      font-size: 25px;
+    }
+
+    h1 {
+      margin: 0;
+      color: #262c46;
+      font-size: 25px;
+      line-height: 1.3;
+    }
+
+    .subtitle {
+      margin: 4px 0 0;
+      color: #7b8195;
+      font-size: 14px;
+    }
+
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      color: #327b62;
+      font-size: 15px;
       font-weight: 650;
-      white-space: nowrap;
-      background: #e8f5ed;
-      color: #227345;
     }
 
-    .badge.warning {
-      background: #fff1d9;
-      color: #956009;
+    .status.warning {
+      color: #a87526;
     }
 
-    .badge.danger {
-      background: #ffebeb;
-      color: #b33434;
+    .status.danger {
+      color: #b74455;
+    }
+
+    .accent-line {
+      height: 3px;
+      margin: 23px 0;
+      background: #ede8fb;
+      border-radius: 20px;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 0 0 18px;
+      color: #30334c;
+      font-size: 18px;
+      font-weight: 650;
+    }
+
+    .section-icon {
+      color: #7767ae;
+      font-size: 19px;
     }
 
     .grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 20px;
-      margin: 20px 0;
+      margin-bottom: 22px;
     }
 
     .field {
@@ -94,10 +125,11 @@
 
     .field > label {
       display: block;
+      margin-bottom: 11px;
+      color: #50576a;
       font-size: 16px;
-      font-weight: 650;
+      font-weight: 550;
       line-height: 1.4;
-      margin-bottom: 12px;
     }
 
     .picker {
@@ -107,6 +139,7 @@
     }
 
     .colon {
+      color: #30334c;
       font-size: 19px;
       font-weight: 700;
     }
@@ -124,8 +157,9 @@
       padding: 11px 12px;
       border: 1px solid #d6dce5;
       border-radius: 9px;
-      background: white;
-      color: #273244;
+      background: #ffffff;
+      color: #30334c;
+      font-family: inherit;
       font-size: 17px;
       font-weight: 600;
       font-variant-numeric: tabular-nums;
@@ -134,29 +168,30 @@
 
     .pick-button:hover,
     .pick-button[aria-expanded="true"] {
-      border-color: #7899d0;
+      border-color: #9c8bd5;
+      background: #faf9ff;
     }
 
-    .chev {
-      font-size: 12px;
-      color: #697386;
+    .chevron {
+      color: #7b8195;
+      font-size: 11px;
     }
 
-    /* Menus flottants : aucun déplacement de page */
+    /* Menus flottants : ne déplacent pas les éléments */
     .menu {
       position: absolute;
       top: calc(100% + 5px);
       left: 0;
       z-index: 100;
-      width: 92px;
-      max-height: 210px;
+      width: 94px;
+      max-height: 200px;
       overflow-y: auto;
       overscroll-behavior: contain;
       padding: 5px;
-      border: 1px solid #dce1e9;
-      border-radius: 10px;
-      background: white;
-      box-shadow: 0 8px 24px #23334c2b;
+      border: 1px solid #e1ddee;
+      border-radius: 11px;
+      background: #ffffff;
+      box-shadow: 0 9px 26px rgba(48, 42, 91, 0.17);
       scrollbar-width: thin;
     }
 
@@ -169,10 +204,10 @@
       width: 100%;
       padding: 10px;
       border: 0;
-      border-radius: 6px;
-      background: white;
-      color: #263244;
-      font: inherit;
+      border-radius: 7px;
+      background: #ffffff;
+      color: #30334c;
+      font-family: inherit;
       font-size: 16px;
       text-align: center;
       cursor: pointer;
@@ -180,53 +215,154 @@
 
     .option:hover,
     .option.selected {
-      background: #e9f0fb;
+      background: #eeeafe;
     }
 
     .option.selected {
+      color: #514595;
       font-weight: 700;
     }
 
+    /* Pause déjeuner regroupée à gauche */
+    .lunch-field {
+      margin-top: 3px;
+    }
+
+    .lunch-label {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin-bottom: 12px;
+      color: #50576a;
+      font-size: 16px;
+      font-weight: 550;
+    }
+
+    .lunch-input-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
     input[type="number"] {
-      width: 160px;
+      width: 105px;
       max-width: 100%;
       padding: 12px;
       border: 1px solid #d6dce5;
       border-radius: 9px;
-      color: inherit;
-      font: inherit;
+      background: #ffffff;
+      color: #30334c;
+      font-family: inherit;
       font-size: 17px;
+    }
+
+    input[type="number"]:focus {
+      outline: 2px solid #c4b6ee;
+      outline-offset: 1px;
+    }
+
+    .unit {
+      color: #7b8195;
+      font-size: 16px;
     }
 
     hr {
+      margin: 25px 0;
       border: 0;
-      border-top: 1px solid #e8ebf0;
-      margin: 26px 0 22px;
+      border-top: 1px solid #eae7f2;
     }
 
-    .summary {
+    /* Cartes des indicateurs */
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 15px;
+      margin-bottom: 27px;
+    }
+
+    .metric {
+      min-width: 0;
+      padding: 20px;
+      border-radius: 15px;
+    }
+
+    .metric.available {
+      background: #f1f0fb;
+    }
+
+    .metric.remaining {
+      background: #eaf6f0;
+    }
+
+    .metric.remaining.warning {
+      background: #fff6e8;
+    }
+
+    .metric.remaining.danger {
+      background: #fceff0;
+    }
+
+    .metric-label {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      gap: 12px;
-      margin-bottom: 16px;
-      font-size: 17px;
-      font-weight: 650;
+      gap: 9px;
+      margin-bottom: 12px;
+      color: #615a8b;
+      font-size: 15px;
+      font-weight: 550;
     }
 
-    .summary strong {
-      font-size: 22px;
+    .remaining .metric-label {
+      color: #327b62;
+    }
+
+    .remaining.warning .metric-label {
+      color: #a87526;
+    }
+
+    .remaining.danger .metric-label {
+      color: #b74455;
+    }
+
+    .metric-value {
+      color: #514595;
+      font-size: 29px;
+      font-weight: 750;
       font-variant-numeric: tabular-nums;
       white-space: nowrap;
+    }
+
+    .remaining .metric-value {
+      color: #327b62;
+    }
+
+    .remaining.warning .metric-value {
+      color: #a87526;
+    }
+
+    .remaining.danger .metric-value {
+      color: #b74455;
+    }
+
+    /* Graphique */
+    .chart-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
+      color: #30334c;
+      font-size: 18px;
+      font-weight: 650;
     }
 
     .bar {
       display: flex;
       width: 100%;
-      height: 46px;
+      height: 43px;
       overflow: hidden;
-      border-radius: 9px;
-      background: #eef0f4;
+      border-radius: 10px;
+      background: #f0f1f5;
     }
 
     .segment {
@@ -235,21 +371,21 @@
     }
 
     .projects {
-      background: #4779bd;
+      background: #6f85ce;
     }
 
     .tasks {
-      background: #e4a45a;
+      background: #e8ae72;
     }
 
     .free {
-      background: #8abba5;
+      background: #83bba3;
     }
 
     .legend {
       display: grid;
       gap: 16px;
-      margin: 22px 0;
+      margin: 23px 0;
     }
 
     .legend-row {
@@ -260,47 +396,70 @@
       font-size: 16px;
     }
 
+    .legend-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #50576a;
+    }
+
     .legend-row strong {
+      color: #30334c;
       font-size: 17px;
       font-variant-numeric: tabular-nums;
       white-space: nowrap;
     }
 
-    .legend-label {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
     .dot {
       width: 12px;
       height: 12px;
-      flex: none;
+      flex-shrink: 0;
       border-radius: 3px;
     }
 
-    .message {
-      padding: 16px;
-      border-radius: 10px;
-      background: #f5f6f8;
+    /* Indicateur final */
+    .result {
+      padding: 19px;
+      border-radius: 14px;
+      background: #f0f8f4;
+    }
+
+    .result.warning {
+      background: #fff6e8;
+    }
+
+    .result.danger {
+      background: #fceff0;
+    }
+
+    .result-heading {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin-bottom: 9px;
+      color: #327b62;
+      font-size: 17px;
+      font-weight: 650;
+    }
+
+    .result.warning .result-heading {
+      color: #a87526;
+    }
+
+    .result.danger .result-heading {
+      color: #b74455;
+    }
+
+    .result-text {
+      color: #404b58;
       font-size: 16px;
       line-height: 1.6;
     }
 
-    .message.warning {
-      color: #8a5a00;
-      background: #fff7e8;
-    }
-
-    .message.danger {
-      color: #a22d2d;
-      background: #fff0f0;
-    }
-
     .hint {
-      margin: 15px 0 0;
-      color: #697386;
-      font-size: 14px;
+      margin: 17px 0 0;
+      color: #85899b;
+      font-size: 13px;
       line-height: 1.6;
     }
 
@@ -314,7 +473,13 @@
       }
 
       h1 {
-        font-size: 23px;
+        font-size: 22px;
+      }
+
+      .header-icon {
+        width: 43px;
+        height: 43px;
+        font-size: 21px;
       }
 
       .grid {
@@ -326,10 +491,22 @@
       }
 
       .pick-button {
-        min-width: 60px;
-        padding: 10px 7px;
+        min-width: 59px;
         gap: 5px;
+        padding: 10px 7px;
         font-size: 16px;
+      }
+
+      .metric {
+        padding: 14px;
+      }
+
+      .metric-label {
+        font-size: 13px;
+      }
+
+      .metric-value {
+        font-size: 23px;
       }
 
       .legend-row {
@@ -339,14 +516,6 @@
       .legend-row strong {
         font-size: 15px;
       }
-
-      .summary {
-        font-size: 15px;
-      }
-
-      .summary strong {
-        font-size: 19px;
-      }
     }
   </style>
 </head>
@@ -355,114 +524,168 @@
 
   <main class="card">
 
-    <div class="top">
-      <h1>📅 Ma journée de travail</h1>
-      <span id="badge" class="badge">Équilibré</span>
-    </div>
+    <!-- En-tête -->
+    <header class="header">
+      <div class="header-left">
+        <div class="header-icon">📅</div>
 
-    <p class="description">
-      Réserve du temps aux projets sans oublier les réunions,
-      les tâches ponctuelles et les imprévus.
-    </p>
-
-    <div class="grid">
-
-      <div class="field">
-        <label>Début de journée</label>
-        <div class="picker" id="start"></div>
+        <div>
+          <h1>Ma journée de travail</h1>
+          <p class="subtitle">Planification & équilibre</p>
+        </div>
       </div>
 
-      <div class="field">
-        <label>Fin de journée</label>
-        <div class="picker" id="end"></div>
+      <div class="status" id="status">
+        <span id="status-icon">✓</span>
+        <span id="status-text">Équilibré</span>
+      </div>
+    </header>
+
+    <div class="accent-line"></div>
+
+    <!-- Horaires -->
+    <section>
+      <h2 class="section-title">
+        <span class="section-icon">◷</span>
+        Horaires de la journée
+      </h2>
+
+      <div class="grid">
+        <div class="field">
+          <label>Début de journée</label>
+          <div class="picker" id="start"></div>
+        </div>
+
+        <div class="field">
+          <label>Fin de journée</label>
+          <div class="picker" id="end"></div>
+        </div>
       </div>
 
-    </div>
+      <div class="lunch-field">
+        <label class="lunch-label" for="lunch">
+          <span class="section-icon">☕</span>
+          Pause déjeuner
+        </label>
 
-    <div class="field">
-      <label for="lunch">Pause déjeuner (minutes)</label>
-      <input
-        id="lunch"
-        type="number"
-        min="0"
-        step="1"
-        value="60"
-        inputmode="numeric"
+        <div class="lunch-input-row">
+          <input
+            id="lunch"
+            type="number"
+            min="0"
+            step="1"
+            value="60"
+            inputmode="numeric"
+          >
+          <span class="unit">minutes</span>
+        </div>
+      </div>
+    </section>
+
+    <hr>
+
+    <!-- Répartition -->
+    <section>
+      <h2 class="section-title">
+        <span class="section-icon">▣</span>
+        Répartition du travail
+      </h2>
+
+      <div class="grid">
+        <div class="field">
+          <label>Projets planifiés</label>
+          <div class="picker" id="projects"></div>
+        </div>
+
+        <div class="field">
+          <label>Réunions et tâches ponctuelles</label>
+          <div class="picker" id="tasks"></div>
+        </div>
+      </div>
+    </section>
+
+    <hr>
+
+    <!-- Indicateurs -->
+    <section class="metrics">
+
+      <div class="metric available">
+        <div class="metric-label">
+          <span>◷</span>
+          Temps disponible
+        </div>
+        <div class="metric-value" id="capacity">—</div>
+      </div>
+
+      <div class="metric remaining" id="remaining-card">
+        <div class="metric-label">
+          <span>❧</span>
+          Marge restante
+        </div>
+        <div class="metric-value" id="remaining">—</div>
+      </div>
+
+    </section>
+
+    <!-- Graphique -->
+    <section>
+      <div class="chart-title">
+        <span>Répartition de la journée</span>
+        <span style="color:#7767ae">▥</span>
+      </div>
+
+      <div
+        class="bar"
+        role="img"
+        aria-label="Répartition du temps de travail"
       >
-    </div>
-
-    <hr>
-
-    <h2>Répartition du travail</h2>
-
-    <div class="grid">
-
-      <div class="field">
-        <label>Projets planifiés</label>
-        <div class="picker" id="projects"></div>
+        <div class="segment projects" id="bar-projects"></div>
+        <div class="segment tasks" id="bar-tasks"></div>
+        <div class="segment free" id="bar-free"></div>
       </div>
 
-      <div class="field">
-        <label>Réunions et tâches ponctuelles</label>
-        <div class="picker" id="tasks"></div>
+      <div class="legend">
+
+        <div class="legend-row">
+          <span class="legend-label">
+            <span class="dot projects"></span>
+            Projets planifiés
+          </span>
+          <strong id="value-projects">—</strong>
+        </div>
+
+        <div class="legend-row">
+          <span class="legend-label">
+            <span class="dot tasks"></span>
+            Réunions et tâches ponctuelles
+          </span>
+          <strong id="value-tasks">—</strong>
+        </div>
+
+        <div class="legend-row">
+          <span class="legend-label">
+            <span class="dot free"></span>
+            Marge non affectée
+          </span>
+          <strong id="value-free">—</strong>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Résultat -->
+    <section class="result" id="result">
+      <div class="result-heading">
+        <span id="result-icon">✓</span>
+        <span id="result-title">Équilibré</span>
       </div>
 
-    </div>
-
-    <hr>
-
-    <div class="summary">
-      <span>Temps de travail disponible</span>
-      <strong id="capacity">—</strong>
-    </div>
-
-    <div
-      class="bar"
-      role="img"
-      aria-label="Répartition du temps de travail"
-    >
-      <div class="segment projects" id="bar-projects"></div>
-      <div class="segment tasks" id="bar-tasks"></div>
-      <div class="segment free" id="bar-free"></div>
-    </div>
-
-    <div class="legend">
-
-      <div class="legend-row">
-        <span class="legend-label">
-          <span class="dot projects"></span>
-          Projets planifiés
-        </span>
-        <strong id="value-projects">—</strong>
-      </div>
-
-      <div class="legend-row">
-        <span class="legend-label">
-          <span class="dot tasks"></span>
-          Réunions et tâches ponctuelles
-        </span>
-        <strong id="value-tasks">—</strong>
-      </div>
-
-      <div class="legend-row">
-        <span class="legend-label">
-          <span class="dot free"></span>
-          Marge non affectée
-        </span>
-        <strong id="value-free">—</strong>
-      </div>
-
-    </div>
-
-    <div
-      class="message"
-      id="message"
-      aria-live="polite"
-    ></div>
+      <div class="result-text" id="result-text"></div>
+    </section>
 
     <p class="hint">
-      La marge non affectée sert à absorber les imprévus.
       Les durées sont calculées hors pause déjeuner.
+      La marge non affectée permet de gérer les imprévus.
     </p>
 
   </main>
@@ -512,7 +735,7 @@
         value.textContent = pad(state[key][part]);
 
         const chevron = document.createElement("span");
-        chevron.className = "chev";
+        chevron.className = "chevron";
         chevron.textContent = "▼";
 
         button.append(value, chevron);
@@ -578,7 +801,7 @@
         return wrap;
       }
 
-      // Création des quatre sélecteurs HH:MM
+      // Sélecteurs HH:MM
       for (const key of Object.keys(state)) {
         const parent = document.getElementById(key);
 
@@ -592,7 +815,6 @@
         parent.append(createPart(key, 1));
       }
 
-      // Fermeture des menus
       document.addEventListener("click", event => {
         if (!event.target.closest(".pick-wrap")) {
           closeMenus();
@@ -632,11 +854,13 @@
 
         const projects = toMinutes(state.projects);
         const tasks = toMinutes(state.tasks);
-
         const free = capacity - projects - tasks;
 
         document.getElementById("capacity").textContent =
           invalid ? "—" : fmt(capacity);
+
+        document.getElementById("remaining").textContent =
+          invalid ? "—" : fmt(free);
 
         document.getElementById("value-projects").textContent =
           fmt(projects);
@@ -662,43 +886,72 @@
         document.getElementById("bar-free").style.width =
           `${invalid ? 0 : Math.max(0, free) / denominator * 100}%`;
 
-        const badge = document.getElementById("badge");
-        const message = document.getElementById("message");
+        const status = document.getElementById("status");
+        const statusIcon = document.getElementById("status-icon");
+        const statusText = document.getElementById("status-text");
 
-        badge.className = "badge";
-        message.className = "message";
+        const remainingCard =
+          document.getElementById("remaining-card");
+
+        const result = document.getElementById("result");
+        const resultIcon = document.getElementById("result-icon");
+        const resultTitle = document.getElementById("result-title");
+        const resultText = document.getElementById("result-text");
+
+        status.className = "status";
+        remainingCard.className = "metric remaining";
+        result.className = "result";
 
         if (invalid) {
-          badge.textContent = "Horaires invalides";
-          badge.classList.add("danger");
-          message.classList.add("danger");
+          status.classList.add("danger");
+          remainingCard.classList.add("danger");
+          result.classList.add("danger");
 
-          message.textContent =
-            "⚠️ Vérifie les horaires de journée et la pause déjeuner.";
+          statusIcon.textContent = "⚠";
+          statusText.textContent = "Horaires invalides";
+
+          resultIcon.textContent = "⚠";
+          resultTitle.textContent = "Horaires invalides";
+          resultText.textContent =
+            "Vérifie les horaires de journée et la pause déjeuner.";
 
         } else if (free < 0) {
-          badge.textContent = "Surcharge";
-          badge.classList.add("danger");
-          message.classList.add("danger");
+          status.classList.add("danger");
+          remainingCard.classList.add("danger");
+          result.classList.add("danger");
 
-          message.textContent =
-            `⚠️ Surcharge : ${fmt(-free)} au-delà de ta capacité. ` +
-            "Réduis ou reporte des tâches.";
+          statusIcon.textContent = "⚠";
+          statusText.textContent = "Surcharge";
+
+          resultIcon.textContent = "⚠";
+          resultTitle.textContent = "Surcharge";
+          resultText.textContent =
+            `Tu as planifié ${fmt(-free)} au-delà de ta capacité. ` +
+            "Un ajustement est nécessaire.";
 
         } else if (free < 60) {
-          badge.textContent = "Marge faible";
-          badge.classList.add("warning");
-          message.classList.add("warning");
+          status.classList.add("warning");
+          remainingCard.classList.add("warning");
+          result.classList.add("warning");
 
-          message.textContent =
-            "⚠️ Marge faible : prévois un arbitrage " +
-            "si des imprévus arrivent.";
+          statusIcon.textContent = "!";
+          statusText.textContent = "Marge faible";
+
+          resultIcon.textContent = "!";
+          resultTitle.textContent = "Marge faible";
+          resultText.textContent =
+            "Ta journée est presque entièrement affectée. " +
+            "Préserve de la souplesse pour les imprévus.";
 
         } else {
-          badge.textContent = "Équilibré";
+          statusIcon.textContent = "✓";
+          statusText.textContent = "Équilibré";
 
-          message.textContent =
-            `✓ Tu conserves ${fmt(free)} pour absorber les imprévus.`;
+          resultIcon.textContent = "✓";
+          resultTitle.textContent = "Équilibré";
+          resultText.textContent =
+            `Tu conserves ${fmt(free)} pour absorber les imprévus ` +
+            "sans surcharger ta journée.";
         }
       }
 
