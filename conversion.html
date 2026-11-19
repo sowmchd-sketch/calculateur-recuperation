@@ -1,0 +1,202 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Convertisseur d'heures</title>
+<style>
+:root {
+  --sage: #78a78f;
+  --dark: #263d34;
+  --muted: #728078;
+  --soft: #f0f5f1;
+}
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 24px 14px;
+  background: #f7f9f7;
+  font-family: system-ui, sans-serif;
+  color: var(--dark);
+}
+
+.card {
+  max-width: 400px;
+  margin: 30px auto;
+  background: white;
+  padding: 28px;
+  border-radius: 22px;
+  box-shadow: 0 8px 30px rgba(30,60,40,.08);
+}
+
+h1 {
+  font-size: 21px;
+  margin: 0 0 8px;
+}
+
+.subtitle {
+  color: var(--muted);
+  font-size: 13px;
+  margin-bottom: 26px;
+}
+
+label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 9px;
+}
+
+input {
+  width: 100%;
+  padding: 15px;
+  border: 1px solid #dce7df;
+  border-radius: 12px;
+  font-size: 20px;
+  outline: none;
+  color: var(--dark);
+  background: #fff;
+}
+
+input:focus {
+  border-color: var(--sage);
+}
+
+.result {
+  background: var(--soft);
+  border-radius: 16px;
+  padding: 22px;
+  margin-top: 22px;
+  text-align: center;
+}
+
+.result-label {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+.result-value {
+  font-size: 42px;
+  font-weight: 750;
+  letter-spacing: -1px;
+}
+
+button {
+  width: 100%;
+  padding: 13px;
+  margin-top: 14px;
+  background: var(--sage);
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-weight: 650;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #638e78;
+}
+
+.hint {
+  margin-top: 15px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 12px;
+}
+</style>
+</head>
+<body>
+
+<div class="card">
+  <h1>⏱ Convertisseur d'heures</h1>
+  <div class="subtitle">
+    Convertis une durée en heures décimales.
+  </div>
+
+  <label for="duree">Durée à convertir</label>
+  <input
+    id="duree"
+    type="text"
+    placeholder="Ex. 6h30"
+    autocomplete="off"
+    oninput="convertir()"
+  >
+
+  <div class="result">
+    <div class="result-label">HEURES DÉCIMALES</div>
+    <div class="result-value" id="resultat">—</div>
+  </div>
+
+  <button onclick="copier()">Copier le résultat</button>
+
+  <div class="hint">
+    Exemples : 1h15 → 1,25 · 6h30 → 6,5
+  </div>
+</div>
+
+<script>
+let valeur = "";
+
+function convertir() {
+  const texte = document.getElementById("duree")
+    .value.trim().toLowerCase().replace(/\s/g, "");
+
+  const resultat = document.getElementById("resultat");
+
+  if (!texte) {
+    valeur = "";
+    resultat.textContent = "—";
+    return;
+  }
+
+  // Formats acceptés : 6h30, 6:30, 6h, 30min
+  const match = texte.match(
+    /^(?:(\d+)h(?:(\d{1,2})(?:min)?)?|(\d+):(\d{1,2})|(\d+)min)$/
+  );
+
+  if (!match) {
+    valeur = "";
+    resultat.textContent = "Format invalide";
+    return;
+  }
+
+  const heures = Number(match[1] ?? match[3] ?? 0);
+  const minutes = Number(match[2] ?? match[4] ?? match[5] ?? 0);
+
+  if (minutes >= 60 && match[5] === undefined) {
+    valeur = "";
+    resultat.textContent = "Minutes invalides";
+    return;
+  }
+
+  const decimal = heures + minutes / 60;
+
+  valeur = String(
+    Math.round(decimal * 10000) / 10000
+  ).replace(".", ",");
+
+  resultat.textContent = valeur + " h";
+}
+
+async function copier() {
+  if (!valeur) return;
+
+  try {
+    await navigator.clipboard.writeText(valeur);
+    const bouton = document.querySelector("button");
+    bouton.textContent = "✓ Copié !";
+    setTimeout(() => {
+      bouton.textContent = "Copier le résultat";
+    }, 1500);
+  } catch {
+    alert("Copie impossible sur ce navigateur.");
+  }
+}
+</script>
+
+</body>
+</html>
