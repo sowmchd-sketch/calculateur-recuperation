@@ -5,41 +5,66 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Convertisseur d'heures</title>
+
 <style>
 :root {
-  --sage: #78a78f;
+  --sage: #83a994;
+  --sage-dark: #648d78;
   --dark: #263d34;
   --muted: #728078;
   --soft: #f0f5f1;
 }
-* { box-sizing: border-box; }
+
+* {
+  box-sizing: border-box;
+}
 
 body {
   margin: 0;
-  padding: 24px 14px;
+  padding: 16px;
   background: #f7f9f7;
-  font-family: system-ui, sans-serif;
+  font-family: system-ui, -apple-system, sans-serif;
   color: var(--dark);
 }
 
 .card {
-  max-width: 400px;
-  margin: 30px auto;
+  max-width: 440px;
+  margin: 0 auto;
+  padding: 26px;
   background: white;
-  padding: 28px;
-  border-radius: 22px;
-  box-shadow: 0 8px 30px rgba(30,60,40,.08);
+  border-radius: 24px;
+  box-shadow: 0 8px 30px rgba(30,60,40,.07);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.header svg {
+  width: 25px;
+  height: 25px;
+  stroke: var(--sage-dark);
 }
 
 h1 {
   font-size: 21px;
-  margin: 0 0 8px;
+  margin: 0;
+  letter-spacing: -.4px;
 }
 
 .subtitle {
-  color: var(--muted);
   font-size: 13px;
-  margin-bottom: 26px;
+  color: var(--muted);
+  margin: 0 0 25px;
+}
+
+.fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
 }
 
 label {
@@ -51,23 +76,26 @@ label {
 
 input {
   width: 100%;
-  padding: 15px;
+  padding: 15px 12px;
   border: 1px solid #dce7df;
   border-radius: 12px;
-  font-size: 20px;
-  outline: none;
+  background: white;
   color: var(--dark);
-  background: #fff;
+  font-size: 23px;
+  font-weight: 600;
+  text-align: center;
+  outline: none;
 }
 
 input:focus {
   border-color: var(--sage);
+  box-shadow: 0 0 0 3px rgba(131,169,148,.13);
 }
 
 .result {
   background: var(--soft);
-  border-radius: 16px;
-  padding: 22px;
+  border-radius: 17px;
+  padding: 25px 15px;
   margin-top: 22px;
   text-align: center;
 }
@@ -75,127 +103,244 @@ input:focus {
 .result-label {
   font-size: 12px;
   color: var(--muted);
-  margin-bottom: 8px;
+  letter-spacing: .5px;
+  margin-bottom: 9px;
 }
 
 .result-value {
-  font-size: 42px;
+  font-size: 43px;
   font-weight: 750;
   letter-spacing: -1px;
+  overflow-wrap: anywhere;
 }
 
 button {
   width: 100%;
-  padding: 13px;
-  margin-top: 14px;
+  padding: 15px;
+  margin-top: 17px;
   background: var(--sage);
+  color: white;
   border: none;
   border-radius: 12px;
-  color: white;
+  font-size: 15px;
   font-weight: 650;
-  font-size: 14px;
   cursor: pointer;
 }
 
 button:hover {
-  background: #638e78;
+  background: var(--sage-dark);
 }
 
-.hint {
-  margin-top: 15px;
+button:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
+.feedback {
+  min-height: 17px;
+  margin-top: 10px;
   text-align: center;
-  color: var(--muted);
   font-size: 12px;
+  color: var(--muted);
+}
+
+@media (max-width: 400px) {
+  .card {
+    padding: 20px;
+  }
+
+  h1 {
+    font-size: 19px;
+  }
+
+  .result-value {
+    font-size: 38px;
+  }
 }
 </style>
 </head>
+
 <body>
 
 <div class="card">
-  <h1>⏱ Convertisseur d'heures</h1>
-  <div class="subtitle">
-    Convertis une durée en heures décimales.
+
+  <div class="header">
+    <svg viewBox="0 0 24 24"
+         fill="none"
+         stroke-width="2"
+         stroke-linecap="round"
+         stroke-linejoin="round">
+      <circle cx="12" cy="13" r="8"/>
+      <path d="M12 9v4l3 2"/>
+      <path d="M9 2h6"/>
+      <path d="M12 2v3"/>
+    </svg>
+
+    <h1>Convertisseur d'heures</h1>
   </div>
 
-  <label for="duree">Durée à convertir</label>
-  <input
-    id="duree"
-    type="text"
-    placeholder="Ex. 6h30"
-    autocomplete="off"
-    oninput="convertir()"
-  >
+  <p class="subtitle">
+    Convertis une durée en heures décimales.
+  </p>
+
+  <div class="fields">
+
+    <div>
+      <label for="heures">Heures</label>
+      <input
+        id="heures"
+        type="number"
+        min="0"
+        step="1"
+        value="6"
+        inputmode="numeric"
+      >
+    </div>
+
+    <div>
+      <label for="minutes">Minutes</label>
+      <input
+        id="minutes"
+        type="number"
+        min="0"
+        max="59"
+        step="1"
+        value="30"
+        inputmode="numeric"
+      >
+    </div>
+
+  </div>
 
   <div class="result">
-    <div class="result-label">HEURES DÉCIMALES</div>
-    <div class="result-value" id="resultat">—</div>
+    <div class="result-label">
+      HEURES DÉCIMALES
+    </div>
+
+    <div
+      class="result-value"
+      id="resultat"
+      aria-live="polite">
+      6,5 h
+    </div>
   </div>
 
-  <button onclick="copier()">Copier le résultat</button>
+  <button id="copier" type="button">
+    Copier le résultat
+  </button>
 
-  <div class="hint">
-    Exemples : 1h15 → 1,25 · 6h30 → 6,5
+  <div
+    class="feedback"
+    id="feedback"
+    aria-live="polite">
   </div>
+
 </div>
 
 <script>
+const heuresInput = document.getElementById("heures");
+const minutesInput = document.getElementById("minutes");
+const resultat = document.getElementById("resultat");
+const bouton = document.getElementById("copier");
+const feedback = document.getElementById("feedback");
+
 let valeur = "";
 
 function convertir() {
-  const texte = document.getElementById("duree")
-    .value.trim().toLowerCase().replace(/\s/g, "");
+  const h = Number(heuresInput.value);
+  const m = Number(minutesInput.value);
 
-  const resultat = document.getElementById("resultat");
+  const valide =
+    heuresInput.value.trim() !== "" &&
+    minutesInput.value.trim() !== "" &&
+    Number.isSafeInteger(h) &&
+    Number.isInteger(m) &&
+    h >= 0 &&
+    m >= 0 &&
+    m < 60;
 
-  if (!texte) {
+  feedback.textContent = "";
+
+  if (!valide) {
     valeur = "";
     resultat.textContent = "—";
+    bouton.disabled = true;
     return;
   }
 
-  // Formats acceptés : 6h30, 6:30, 6h, 30min
-  const match = texte.match(
-    /^(?:(\d+)h(?:(\d{1,2})(?:min)?)?|(\d+):(\d{1,2})|(\d+)min)$/
-  );
-
-  if (!match) {
-    valeur = "";
-    resultat.textContent = "Format invalide";
-    return;
-  }
-
-  const heures = Number(match[1] ?? match[3] ?? 0);
-  const minutes = Number(match[2] ?? match[4] ?? match[5] ?? 0);
-
-  if (minutes >= 60 && match[5] === undefined) {
-    valeur = "";
-    resultat.textContent = "Minutes invalides";
-    return;
-  }
-
-  const decimal = heures + minutes / 60;
+  const decimal = h + m / 60;
 
   valeur = String(
     Math.round(decimal * 10000) / 10000
   ).replace(".", ",");
 
   resultat.textContent = valeur + " h";
+  bouton.disabled = false;
 }
 
 async function copier() {
   if (!valeur) return;
 
+  const texte = valeur;
+  let copieReussie = false;
+
+  // Méthode moderne
   try {
-    await navigator.clipboard.writeText(valeur);
-    const bouton = document.querySelector("button");
+    if (navigator.clipboard &&
+        window.isSecureContext) {
+      await navigator.clipboard.writeText(texte);
+      copieReussie = true;
+    }
+  } catch (e) {
+    copieReussie = false;
+  }
+
+  // Méthode de secours pour certaines intégrations
+  if (!copieReussie) {
+    const zone = document.createElement("textarea");
+    zone.value = texte;
+    zone.setAttribute("readonly", "");
+    zone.style.position = "fixed";
+    zone.style.opacity = "0";
+
+    document.body.appendChild(zone);
+    zone.focus();
+    zone.select();
+
+    try {
+      copieReussie = document.execCommand("copy");
+    } catch (e) {
+      copieReussie = false;
+    }
+
+    document.body.removeChild(zone);
+  }
+
+  if (copieReussie) {
     bouton.textContent = "✓ Copié !";
+    feedback.textContent = "";
+
     setTimeout(() => {
       bouton.textContent = "Copier le résultat";
     }, 1500);
-  } catch {
-    alert("Copie impossible sur ce navigateur.");
+  } else {
+    feedback.textContent =
+      "Copie bloquée : sélectionne le résultat pour le copier manuellement.";
+
+    const selection = window.getSelection();
+    const range = document.createRange();
+
+    range.selectNodeContents(resultat);
+    selection.removeAllRanges();
+    selection.addRange(range);
   }
 }
+
+heuresInput.addEventListener("input", convertir);
+minutesInput.addEventListener("input", convertir);
+bouton.addEventListener("click", copier);
+
+convertir();
 </script>
 
 </body>
