@@ -1,0 +1,493 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mes alarmes</title>
+<style>
+:root {
+  --sage: #78a78f;
+  --sage-dark: #628b75;
+  --dark: #263d34;
+  --muted: #728078;
+  --soft: #f0f5f1;
+  --line: #e6ede8;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  padding: 16px;
+  background: #f7f9f7;
+  font-family: system-ui, -apple-system, sans-serif;
+  color: var(--dark);
+}
+.card {
+  max-width: 460px;
+  margin: 0 auto;
+  padding: 24px;
+  background: white;
+  border-radius: 22px;
+  box-shadow: 0 8px 30px rgba(30,60,40,.07);
+}
+.header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.header-icon { font-size: 27px; }
+h1 { font-size: 21px; margin: 0; }
+.subtitle {
+  font-size: 12px;
+  color: var(--muted);
+  margin: 4px 0 0;
+}
+.count {
+  margin-left: auto;
+  background: var(--soft);
+  color: var(--sage-dark);
+  padding: 6px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+.list { margin-top: 22px; }
+.alarm {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 15px 0;
+  border-top: 1px solid var(--line);
+}
+.alarm-time {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -.6px;
+}
+.alarm-name {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 3px;
+}
+.alarm.off .alarm-time { color: #a5b2aa; }
+.alarm-info { flex: 1; min-width: 0; }
+.toggle {
+  position: relative;
+  display: inline-block;
+  width: 42px;
+  height: 24px;
+  flex-shrink: 0;
+}
+.toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.track {
+  position: absolute;
+  inset: 0;
+  background: #d7e0da;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: .2s;
+}
+.track:before {
+  content: "";
+  position: absolute;
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  top: 3px;
+  background: white;
+  border-radius: 50%;
+  transition: .2s;
+}
+.toggle input:checked + .track {
+  background: var(--sage);
+}
+.toggle input:checked + .track:before {
+  transform: translateX(18px);
+}
+.delete {
+  background: transparent;
+  border: none;
+  color: #a2aea5;
+  cursor: pointer;
+  font-size: 19px;
+  padding: 7px;
+}
+.delete:hover { color: #bf6868; }
+.add-box {
+  margin-top: 16px;
+  background: var(--soft);
+  border-radius: 16px;
+  padding: 17px;
+}
+.add-title {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+.fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 7px;
+}
+input[type="time"],
+input[type="text"] {
+  width: 100%;
+  min-width: 0;
+  padding: 11px;
+  border: 1px solid #d9e5dc;
+  border-radius: 10px;
+  background: white;
+  color: var(--dark);
+  font: inherit;
+  font-size: 14px;
+  outline: none;
+}
+input:focus { border-color: var(--sage); }
+.add-button, .stop-button, .test-button {
+  width: 100%;
+  padding: 13px;
+  margin-top: 14px;
+  border: none;
+  border-radius: 11px;
+  background: var(--sage);
+  color: white;
+  font-size: 14px;
+  font-weight: 650;
+  cursor: pointer;
+}
+.add-button:hover, .stop-button:hover {
+  background: var(--sage-dark);
+}
+.test-button {
+  background: white;
+  color: var(--sage-dark);
+  border: 1px solid #d9e5dc;
+}
+.ringing {
+  display: none;
+  margin-top: 16px;
+  padding: 18px;
+  background: #fff2e5;
+  border: 1px solid #f1d5ae;
+  border-radius: 14px;
+  text-align: center;
+}
+.ringing.visible { display: block; }
+.ringing-title {
+  font-size: 20px;
+  font-weight: 750;
+}
+.ringing-name {
+  margin-top: 5px;
+  font-size: 14px;
+}
+.stop-button { background: #b76e57; }
+.note {
+  margin-top: 15px;
+  font-size: 11px;
+  color: var(--muted);
+  text-align: center;
+  line-height: 1.5;
+}
+</style>
+</head>
+<body>
+
+<div class="card">
+  <div class="header">
+    <span class="header-icon">⏰</span>
+    <div>
+      <h1>Mes alarmes</h1>
+      <p class="subtitle">Organise tes rappels horaires</p>
+    </div>
+    <span class="count" id="count">0 actives</span>
+  </div>
+
+  <div class="list" id="alarmList"></div>
+
+  <div class="ringing" id="ringing">
+    <div class="ringing-title">⏰ C'est l'heure !</div>
+    <div class="ringing-name" id="ringingName"></div>
+    <button class="stop-button" onclick="stopAlarm()">
+      Arrêter l'alarme
+    </button>
+  </div>
+
+  <div class="add-box">
+    <div class="add-title">Ajouter une alarme</div>
+    <div class="fields">
+      <div>
+        <label for="newTime">Heure</label>
+        <input type="time" id="newTime" value="14:00">
+      </div>
+      <div>
+        <label for="newName">Nom de l'alarme</label>
+        <input type="text" id="newName"
+               placeholder="Ex. Pause">
+      </div>
+    </div>
+    <button class="add-button" onclick="addAlarm()">
+      + Ajouter une alarme
+    </button>
+  </div>
+
+  <button class="test-button" onclick="testAlarm()">
+    🔊 Tester la sonnerie
+  </button>
+
+  <div class="note">
+    Garde cette page ouverte et ton ordinateur éveillé
+    pour recevoir les alarmes.
+  </div>
+</div>
+
+<script>
+const STORAGE_KEY = "mes-alarmes-v1";
+
+const defaults = [
+  { id: 1, time: "09:00", name: "Début de journée", on: true },
+  { id: 2, time: "12:30", name: "Pause déjeuner", on: true },
+  { id: 3, time: "17:30", name: "Fin de journée", on: false }
+];
+
+function loadAlarms() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    return saved ? JSON.parse(saved) : defaults;
+  } catch {
+    return defaults;
+  }
+}
+
+let alarms = loadAlarms();
+let audioContext = null;
+let soundInterval = null;
+let activeOscillators = [];
+let lastCheckedMinute = null;
+let ringing = false;
+
+function save() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(alarms));
+  } catch {}
+}
+
+function escapeHTML(value) {
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+function render() {
+  const list = document.getElementById("alarmList");
+  list.innerHTML = "";
+
+  alarms.sort((a, b) => a.time.localeCompare(b.time));
+
+  alarms.forEach(alarm => {
+    const row = document.createElement("div");
+    row.className = "alarm" + (alarm.on ? "" : " off");
+
+    row.innerHTML = `
+      <div class="alarm-info">
+        <div class="alarm-time">${escapeHTML(alarm.time)}</div>
+        <div class="alarm-name">${escapeHTML(alarm.name)}</div>
+      </div>
+      <label class="toggle">
+        <input type="checkbox" ${alarm.on ? "checked" : ""}>
+        <span class="track"></span>
+      </label>
+      <button class="delete" title="Supprimer">✕</button>
+    `;
+
+    row.querySelector('input').addEventListener(
+      "change",
+      e => toggleAlarm(alarm.id, e.target.checked)
+    );
+
+    row.querySelector(".delete").addEventListener(
+      "click",
+      () => deleteAlarm(alarm.id)
+    );
+
+    list.appendChild(row);
+  });
+
+  const count = alarms.filter(a => a.on).length;
+  document.getElementById("count").textContent =
+    count + (count > 1 ? " actives" : " active");
+}
+
+function addAlarm() {
+  const time = document.getElementById("newTime").value;
+  const name = document.getElementById("newName").value.trim();
+
+  if (!time) {
+    alert("Choisis une heure.");
+    return;
+  }
+
+  alarms.push({
+    id: Date.now() + Math.random(),
+    time,
+    name: name || "Nouvelle alarme",
+    on: true
+  });
+
+  document.getElementById("newName").value = "";
+  save();
+  render();
+}
+
+function toggleAlarm(id, enabled) {
+  alarms = alarms.map(a =>
+    a.id === id ? { ...a, on: enabled } : a
+  );
+  save();
+  render();
+}
+
+function deleteAlarm(id) {
+  alarms = alarms.filter(a => a.id !== id);
+  save();
+  render();
+}
+
+async function prepareAudio() {
+  const AudioCtx = window.AudioContext ||
+                   window.webkitAudioContext;
+
+  if (!AudioCtx) return false;
+
+  if (!audioContext) audioContext = new AudioCtx();
+
+  try {
+    await audioContext.resume();
+    return audioContext.state === "running";
+  } catch {
+    return false;
+  }
+}
+
+function beep() {
+  if (!audioContext || audioContext.state !== "running") {
+    return;
+  }
+
+  const oscillator = audioContext.createOscillator();
+  const gain = audioContext.createGain();
+  const now = audioContext.currentTime;
+
+  oscillator.type = "sine";
+  oscillator.frequency.setValueAtTime(880, now);
+
+  gain.gain.setValueAtTime(0.0001, now);
+  gain.gain.exponentialRampToValueAtTime(0.3, now + 0.03);
+  gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.4);
+
+  oscillator.connect(gain);
+  gain.connect(audioContext.destination);
+
+  oscillator.start(now);
+  oscillator.stop(now + 0.42);
+
+  activeOscillators.push(oscillator);
+
+  oscillator.onended = () => {
+    activeOscillators = activeOscillators.filter(
+      o => o !== oscillator
+    );
+  };
+}
+
+function startAlarm(name) {
+  if (ringing) return;
+
+  ringing = true;
+  document.getElementById("ringingName").textContent = name;
+  document.getElementById("ringing")
+    .classList.add("visible");
+
+  beep();
+  soundInterval = setInterval(beep, 900);
+
+  document.title = "⏰ ALARME !";
+}
+
+function stopAlarm() {
+  ringing = false;
+  clearInterval(soundInterval);
+  soundInterval = null;
+
+  activeOscillators.forEach(o => {
+    try { o.stop(); } catch {}
+  });
+  activeOscillators = [];
+
+  document.getElementById("ringing")
+    .classList.remove("visible");
+
+  document.title = "Mes alarmes";
+}
+
+async function testAlarm() {
+  const ready = await prepareAudio();
+
+  if (!ready) {
+    alert("Le navigateur n'a pas autorisé le son.");
+    return;
+  }
+
+  stopAlarm();
+  startAlarm("Test de la sonnerie");
+}
+
+function checkAlarms() {
+  const now = new Date();
+
+  const dateKey =
+    now.getFullYear() + "-" +
+    String(now.getMonth() + 1).padStart(2, "0") + "-" +
+    String(now.getDate()).padStart(2, "0");
+
+  const time =
+    String(now.getHours()).padStart(2, "0") + ":" +
+    String(now.getMinutes()).padStart(2, "0");
+
+  const minuteKey = dateKey + " " + time;
+
+  if (minuteKey === lastCheckedMinute) return;
+  lastCheckedMinute = minuteKey;
+
+  const due = alarms.filter(a => a.on && a.time === time);
+
+  if (due.length > 0) {
+    startAlarm(due.map(a => a.name).join(" · "));
+  }
+}
+
+// Le son doit être initialisé par une interaction utilisateur.
+document.addEventListener("click", () => {
+  prepareAudio();
+}, { once: true });
+
+// Vérification régulière des alarmes.
+setInterval(checkAlarms, 1000);
+
+render();
+</script>
+</body>
+</html>
